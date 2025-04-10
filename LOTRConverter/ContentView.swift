@@ -34,10 +34,16 @@ struct ContentView: View {
                 HStack {
                     VStack {
                         HStack {
-                            Image("gold")
+                            Image("gold") // selectedCurrencyFrom currency image from SelectCurrency
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 100)
+                            
+                            // Add tap gesture to the image
+                                .onTapGesture {
+                                    // Handle tap gesture to select currency
+                                    print("Tapped on gold image")
+                                }
                         }
                         // Text field for left currency amount
                         TextField("Enter amount", text: $leftCurrencyAmount)
@@ -53,6 +59,7 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .foregroundStyle(.white)
                         .symbolEffect(.pulse)
+                    
 
                     VStack {
                         HStack {
