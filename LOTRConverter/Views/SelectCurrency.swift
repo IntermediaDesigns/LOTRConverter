@@ -1,5 +1,5 @@
 //
-//  ExchangeRate.swift
+//  SelectCurrency.swift
 //  LOTRConverter
 //
 //  Created by Lynjai Jimenez on 4/9/25.
@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SelectCurrency: View {
     @Environment(\.dismiss) var dismiss  // Environment variable to dismiss the view
+    @State private var selectedCurrencyFrom: Currency?
+    @State private var selectedCurrencyTo: Currency?
 
     var body: some View {
         ZStack {
@@ -31,15 +33,24 @@ struct SelectCurrency: View {
                     columns: [GridItem(), GridItem(), GridItem()],
                     spacing: 10
                 ) {
-                    ForEach(0..<5) { _ in
-                        CurrencyIcon(currencyImage: .copper)
+                    ForEach(Currency.allCases) { currency in
+                        if self.selectedCurrencyFrom == currency {
 
+                            CurrencyIcon(currencyImage: currency.image)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color.black, lineWidth: 4)
+                                        .opacity(0.7)
+                                }
+                        } else {
+                            CurrencyIcon(currencyImage: currency.image)
+
+                                // Add a tap gesture to each currency icon
+                                .onTapGesture {
+                                    self.selectedCurrencyFrom = currency
+                                }
+                        }
                     }
-                    //                    CurrencyIcon(currencyImage: .copper)
-                    //                    CurrencyIcon(currencyImage: .gold)
-                    //                    CurrencyIcon(currencyImage: .silver)
-                    //                    CurrencyIcon(currencyImage: .goldpiece)
-                    //                    CurrencyIcon(currencyImage: .silverpiece)
                 }
 
                 Spacer()
@@ -55,14 +66,23 @@ struct SelectCurrency: View {
                     columns: [GridItem(), GridItem(), GridItem()],
                     spacing: 10
                 ) {
-//                    ForEach(0..<5) { _ in
-//
-//                    }
-                    //                    CurrencyIcon(currencyImage: .copper)
-                    //                    CurrencyIcon(currencyImage: .gold)
-                    //                    CurrencyIcon(currencyImage: .silver)
-                    //                    CurrencyIcon(currencyImage: .goldpiece)
-                    //                    CurrencyIcon(currencyImage: .silverpiece)
+                    ForEach(Currency.allCases) { currency in
+                        if self.selectedCurrencyTo == currency {
+
+                            CurrencyIcon(currencyImage: currency.image)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color.black, lineWidth: 4)
+                                        .opacity(0.7)
+                                }
+                        } else {
+                            CurrencyIcon(currencyImage: currency.image)
+                                // Add a tap gesture to each currency icon
+                                .onTapGesture {
+                                    self.selectedCurrencyTo = currency
+                                }
+                        }
+                    }
                 }
 
                 Spacer()
