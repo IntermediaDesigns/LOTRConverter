@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var showExchangeInfo = false
+    @State var showExchangeInfo = false  // State variable to control the display of the info view
+    @State var leftCurrencyAmount = ""  // State variable for the left currency amount text field
+    @State var rightCurrencyAmount = ""  // State variable for the right currency amount text field
 
     var body: some View {
         ZStack {
@@ -35,15 +37,18 @@ struct ContentView: View {
                             Image("gold")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(height: 33)
-
-                            Text("Gold")
-                                .font(.headline)
-                                .foregroundStyle(.white)
+                                .frame(height: 100)
                         }
-                        Text("This is text.")
-                    }
-
+                        // Text field for left currency amount
+                        TextField("Enter amount", text: $leftCurrencyAmount)
+                            .textFieldStyle(.roundedBorder)
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                            .keyboardType(.decimalPad)
+                            .padding(.vertical, 10)
+                    } // End of HStack
+                    // Centered equal sign
+                
                     Image(systemName: "equal")
                         .font(.largeTitle)
                         .foregroundStyle(.white)
@@ -51,18 +56,25 @@ struct ContentView: View {
 
                     VStack {
                         HStack {
-                            Text("Silver")
-                                .font(.headline)
-                                .foregroundStyle(.white)
-
                             Image("silver")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(height: 33)
+                                .frame(height: 100)
                         }
-                        Text("This is text.")
-                    }
+                        // Text field for right currency amount
+                        TextField("Enter amount", text: $rightCurrencyAmount)
+                            .textFieldStyle(.roundedBorder)
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .padding(.vertical, 10)
+                    } // End of HStack
                 } // End of Top Section
+                .padding(.horizontal)
+                .padding(.vertical, 25)
+                .background(.black.opacity(0.7))
+                .cornerRadius(40)
                 
 
                 Spacer() // Spacer between top and bottom sections
@@ -84,10 +96,9 @@ struct ContentView: View {
 
                 
             } // Bottom of first VStack
-            
-
-            .border(.blue)  // Test edges
+            .padding(.horizontal, 7)
             .frame(width: UIScreen.main.bounds.width)
+          
             
         } // End of ZStack
     }
