@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ExchangeInfo: View {
-    @State var exitInfo = false  // State variable to control the display of the info view
+    @Environment(\.dismiss) var dismiss  // Environment variable to dismiss the view
     var body: some View {
         ZStack {
             // Background
@@ -45,7 +45,7 @@ struct ExchangeInfo: View {
                 Spacer()
                 // Done button
                 Button {
-                    exitInfo.toggle()
+                    dismiss()  // Dismiss the view when the button is pressed
 
                 } label: {
                     ZStack {
