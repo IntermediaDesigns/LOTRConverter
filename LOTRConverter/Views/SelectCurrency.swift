@@ -9,8 +9,9 @@ import SwiftUI
 
 struct SelectCurrency: View {
     @Environment(\.dismiss) var dismiss  // Environment variable to dismiss the view
-    @State private var selectedCurrencyFrom: Currency?
-    @State private var selectedCurrencyTo: Currency?
+    @Binding var leftSelectedCurrency: Currency
+    @Binding var rightSelectedCurrency: Currency
+
 
     var body: some View {
         ZStack {
@@ -27,31 +28,9 @@ struct SelectCurrency: View {
                     .fontWeight(.bold)
                     .font(.system(size: 20))
                     .padding(.bottom, 20)
+                    .foregroundStyle(.black)
 
-                //currency image
-                LazyVGrid(
-                    columns: [GridItem(), GridItem(), GridItem()],
-                    spacing: 10
-                ) {
-                    ForEach(Currency.allCases) { currency in
-                        if self.selectedCurrencyFrom == currency {
-
-                            CurrencyIcon(currencyImage: currency.image)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.black, lineWidth: 4)
-                                        .opacity(0.7)
-                                }
-                        } else {
-                            CurrencyIcon(currencyImage: currency.image)
-
-                                // Add a tap gesture to each currency icon
-                                .onTapGesture {
-                                    self.selectedCurrencyFrom = currency
-                                }
-                        }
-                    }
-                }
+                IconGrid(currency: $leftSelectedCurrency)
 
                 Spacer()
 
@@ -60,30 +39,9 @@ struct SelectCurrency: View {
                     .fontWeight(.bold)
                     .font(.system(size: 20))
                     .padding(.bottom, 20)
+                    .foregroundStyle(.black)
 
-                // currency image
-                LazyVGrid(
-                    columns: [GridItem(), GridItem(), GridItem()],
-                    spacing: 10
-                ) {
-                    ForEach(Currency.allCases) { currency in
-                        if self.selectedCurrencyTo == currency {
-
-                            CurrencyIcon(currencyImage: currency.image)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.black, lineWidth: 4)
-                                        .opacity(0.7)
-                                }
-                        } else {
-                            CurrencyIcon(currencyImage: currency.image)
-                                // Add a tap gesture to each currency icon
-                                .onTapGesture {
-                                    self.selectedCurrencyTo = currency
-                                }
-                        }
-                    }
-                }
+                IconGrid(currency: $rightSelectedCurrency)
 
                 Spacer()
                 // done button
@@ -109,7 +67,7 @@ struct SelectCurrency: View {
                 .shadow(color: .black, radius: 4, x: 0, y: 0)
                 .padding(.bottom, 20)
             }  // End of VStack
-            .padding(.top, 20)
+            .padding(.top, 40)
             .padding(.horizontal, 25)
             .frame(width: UIScreen.main.bounds.width)
 
@@ -120,5 +78,7 @@ struct SelectCurrency: View {
 }
 
 #Preview {
-    SelectCurrency()
+    @Previewable @State var leftSelectedCurrency: Currency = .copperPenny
+    @Previewable @State var rightSelectedCurrency: Currency = .goldPenny
+    SelectCurrency(leftSelectedCurrency: $rightSelectedCurrency, rightSelectedCurrency: $leftSelectedCurrency)
 }

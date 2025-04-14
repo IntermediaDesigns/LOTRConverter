@@ -9,10 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     @State var showExchangeInfo = false  // State variable to control the display of the info view
+    @State var showSelectCurrency = false  // State variable to control the display of the SelectCurrency view
+
     @State var leftCurrencyAmount = ""  // State variable for the left currency amount text field
     @State var rightCurrencyAmount = ""  // State variable for the right currency amount text field
 
+    @State var leftCurrency = Currency.copperPenny  // State variable for the selected left currency
+    @State var rightCurrency = Currency.silverPenny  // State variable for the selected right currency
+
     var body: some View {
+
         ZStack {
             // Background
             Image("background")
@@ -34,60 +40,64 @@ struct ContentView: View {
                 HStack {
                     VStack {
                         HStack {
-                            Image("gold") // selectedCurrencyFrom currency image from SelectCurrency
+                            Image(leftCurrency.image)  // selectedCurrencyFrom currency image from SelectCurrency
                                 .resizable()
                                 .scaledToFit()
-                                .frame(height: 100)
-                            
-                            // Add tap gesture to the image
-                                .onTapGesture {
-                                    // Handle tap gesture to select currency
-                                    print("Tapped on gold image")
-                                }
+                                .frame(height: 120)
                         }
+                        // Add tap gesture to the image
+                        .onTapGesture {
+                            // Handle tap gesture to select currency
+                            showSelectCurrency.toggle()  // Show the SelectCurrency view
+                        }
+
                         // Text field for left currency amount
                         TextField("Enter amount", text: $leftCurrencyAmount)
                             .textFieldStyle(.roundedBorder)
-                            .cornerRadius(10)
+                            .cornerRadius(5)
                             .padding(.horizontal)
                             .keyboardType(.decimalPad)
                             .padding(.vertical, 10)
-                    } // End of HStack
+                    }  // End of HStack
                     // Centered equal sign
-                
+
                     Image(systemName: "equal")
                         .font(.largeTitle)
                         .foregroundStyle(.white)
                         .symbolEffect(.pulse)
-                    
 
                     VStack {
                         HStack {
-                            Image("silver")
+                            Image(rightCurrency.image)  // selectedCurrencyTo currency image from SelectCurrency
                                 .resizable()
                                 .scaledToFit()
-                                .frame(height: 100)
+                                .frame(height: 120)
                         }
+                        // Add tap gesture to the image
+                        .onTapGesture {
+                            // Handle tap gesture to select currency
+                            showSelectCurrency.toggle()  // Show the SelectCurrency view
+                        }
+
                         // Text field for right currency amount
                         TextField("Enter amount", text: $rightCurrencyAmount)
                             .textFieldStyle(.roundedBorder)
-                            .cornerRadius(10)
+                            .cornerRadius(5)
                             .padding(.horizontal)
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .padding(.vertical, 10)
-                    } // End of HStack
-                } // End of Top Section
+                    }  // End of HStack
+                }  // End of Top Section
                 .padding(.horizontal)
                 .padding(.vertical, 25)
                 .background(.black.opacity(0.7))
-                .cornerRadius(40)
-                
+                .cornerRadius(10)
 
-                Spacer() // Spacer between top and bottom sections
-                
+                Spacer()  // Spacer between top and bottom sections
+
                 // Bottom Section
-                
+
                 // Info Button
                 HStack {
                     Spacer()
@@ -103,14 +113,17 @@ struct ContentView: View {
                         ExchangeInfo()
                     }
                 }  // End of Bottom Section
-
-                
-            } // Bottom of first VStack
+            }  // Bottom of first VStack
             .padding(.horizontal, 7)
             .frame(width: UIScreen.main.bounds.width)
-          
-            
-        } // End of ZStack
+        }  // End of ZStack
+
+        .sheet(isPresented: $showSelectCurrency) {
+            SelectCurrency(
+                leftSelectedCurrency: $leftCurrency,
+                rightSelectedCurrency: $rightCurrency
+            )
+        }
     }
 }
 
